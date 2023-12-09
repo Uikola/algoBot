@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"algoBot/internal/repository"
+	"algoBot/internal/db/repository"
 	"context"
 	"database/sql"
 	"log"
