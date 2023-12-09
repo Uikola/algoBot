@@ -3,7 +3,6 @@ package config
 import "github.com/spf13/viper"
 
 type Config struct {
-	Port          string `mapstructure:"PORT"`
 	ConnString    string `mapstructure:"CONN_STRING"`
 	DriverName    string `mapstructure:"DRIVER_NAME"`
 	TelegramToken string `mapstructure:"TG_TOKEN"`
