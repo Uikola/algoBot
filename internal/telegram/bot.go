@@ -3,16 +3,17 @@ package telegram
 import (
 	"algoBot/internal/db/repository"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"log"
+	"log/slog"
 )
 
 type Bot struct {
 	bot        *tgbotapi.BotAPI
 	repository repository.Repository
+	log        *slog.Logger
 }
 
-func NewBot(bot *tgbotapi.BotAPI, repository repository.Repository) *Bot {
-	return &Bot{bot: bot, repository: repository}
+func NewBot(bot *tgbotapi.BotAPI, repository repository.Repository, log *slog.Logger) *Bot {
+	return &Bot{bot: bot, repository: repository, log: log}
 }
 
 func (b *Bot) Start() error {
@@ -27,13 +28,13 @@ func (b *Bot) Start() error {
 
 		if update.Message.IsCommand() {
 			if err := b.handleCmd(update.Message); err != nil {
-				log.Printf("handle command error: %s", err.Error())
+				b.log.Info("handle command error: %s", slog.String("err", err.Error()))
 			}
 			continue
 		}
 
 		if err := b.handleMsg(update.Message); err != nil {
-			log.Printf("handle msg error: %s", err.Error())
+			b.log.Info("handle msg error: %s", slog.String("err", err.Error()))
 		}
 	}
 	return nil

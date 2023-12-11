@@ -6,19 +6,24 @@ type Config struct {
 	ConnString    string `mapstructure:"CONN_STRING"`
 	DriverName    string `mapstructure:"DRIVER_NAME"`
 	TelegramToken string `mapstructure:"TG_TOKEN"`
+	Env           string `mapstructure:"ENV"`
 }
 
-func LoadConfig() (config Config, err error) {
+func MustConfig() *Config {
+	var config Config
 	viper.AddConfigPath("./internal/config/envs")
 	viper.SetConfigName("dev")
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 
-	err = viper.ReadInConfig()
+	err := viper.ReadInConfig()
 	if err != nil {
-		return
+		panic("failed to read config: " + err.Error())
 	}
 
 	err = viper.Unmarshal(&config)
-	return
+	if err != nil {
+		panic(err.Error())
+	}
+	return &config
 }
