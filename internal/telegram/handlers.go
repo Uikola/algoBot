@@ -19,11 +19,15 @@ const (
 	BFSTopic           = "BFS(Поиск в ширину)"
 	DFSTopic           = "DFS(Поиск в глубину)"
 	backtrackTopic     = "Поиск с возвратом"
+	queueTopic         = "Очередь"
+	recursionTopic     = "Рекурсия"
+	sortsTopic         = "Сортировки"
 )
 
 const (
 	cmdStart         = "start"
 	cmdHelp          = "help"
+	cmdGuide         = "guide"
 	cmdArray         = "array"
 	cmdLinkedList    = "linkedList"
 	cmdStack         = "stack"
@@ -35,14 +39,19 @@ const (
 	cmdBFS           = "BFS"
 	cmdDFS           = "DFS"
 	cmdBacktrack     = "backtrack"
+	cmdQueue         = "queue"
+	cmdRecursion     = "recursion"
+	cmdSorts         = "sorts"
 )
 
 func (b *Bot) handleCmd(message *tgbotapi.Message) error {
 	switch message.Command() {
 	case cmdStart:
-		return b.handleStartCmd(message)
+		return b.handleMsgCmd(message, msgStart)
 	case cmdHelp:
-		return b.handleHelpCmd(message)
+		return b.handleMsgCmd(message, msgHelp)
+	case cmdGuide:
+		return b.handleMsgCmd(message, msgGuide)
 	case cmdArray:
 		return b.handleTopic(message, arrayTopic)
 	case cmdLinkedList:
@@ -65,25 +74,19 @@ func (b *Bot) handleCmd(message *tgbotapi.Message) error {
 		return b.handleTopic(message, DFSTopic)
 	case cmdBacktrack:
 		return b.handleTopic(message, backtrackTopic)
+	case cmdQueue:
+		return b.handleTopic(message, queueTopic)
+	case cmdRecursion:
+		return b.handleTopic(message, recursionTopic)
+	case cmdSorts:
+		return b.handleTopic(message, sortsTopic)
 	default:
-		return b.handleUnknownCmd(message)
+		return b.handleMsg(message)
 	}
 }
 
-func (b *Bot) handleStartCmd(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, msgStart)
-	_, err := b.bot.Send(msg)
-	return err
-}
-
-func (b *Bot) handleHelpCmd(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, msgHelp)
-	_, err := b.bot.Send(msg)
-	return err
-}
-
-func (b *Bot) handleUnknownCmd(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, msgUnknown)
+func (b *Bot) handleMsgCmd(message *tgbotapi.Message, text string) error {
+	msg := tgbotapi.NewMessage(message.Chat.ID, text)
 	_, err := b.bot.Send(msg)
 	return err
 }
