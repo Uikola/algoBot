@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	bigOTopic          = "О-большое"
 	arrayTopic         = "Массив"
 	linkedListTopic    = "Связный список"
 	stackTopic         = "Стек"
@@ -28,6 +29,7 @@ const (
 	cmdStart         = "start"
 	cmdHelp          = "help"
 	cmdGuide         = "guide"
+	cmdBigO          = "bigO"
 	cmdArray         = "array"
 	cmdLinkedList    = "linkedList"
 	cmdStack         = "stack"
@@ -52,6 +54,8 @@ func (b *Bot) handleCmd(message *tgbotapi.Message) error {
 		return b.handleMsgCmd(message, msgHelp)
 	case cmdGuide:
 		return b.handleMsgCmd(message, msgGuide)
+	case cmdBigO:
+		return b.handleTopic(message, bigOTopic)
 	case cmdArray:
 		return b.handleTopic(message, arrayTopic)
 	case cmdLinkedList:
